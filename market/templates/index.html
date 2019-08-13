@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Marketplace Home</h1>
+  <h2>Dynamic content</h2>
+  <p>The marketplace has the following record counts:</p>
+  <ul>
+    <li><strong>Users:</strong> {{ num_users }}</li>
+  </ul>
+{% endblock %}
+
+<!-- Add additional CSS in static file --> 
+{% load static %} 
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
