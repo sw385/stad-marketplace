@@ -52,12 +52,22 @@ class Category(models.Model):
          return f'{self.name}'
 
 
+class Image(models.Model):
+    description = models.CharField(max_length = 35, help_text = 'Enter a description for this image.')
+    
+    image = models.ImageField(upload_to = './pictures/') 
+    uploaded_by = models.ForeignKey(User, on_delete = models.CASCADE, null=True) #when user is deleted delete all of their pictures?
+
+    def __str__(self):
+        return f'{self.id}'    
+
+
 class Product(models.Model):
     name = models.CharField(max_length = 50)
     
-    #seller = models.ForeignKey(User)
+    seller = models.ForeignKey(User, on_delete = models.CASCADE, null=True)
 
-    #pictures = models.ManyToManyField(Image, help_text = 'Select some pictures for this product.')
+    pictures = models.ManyToManyField(Image, help_text = 'Select some pictures for this product.')
 
     # The price of the product must be between $0.01 and $9,999.99
     price = models.DecimalField(
@@ -86,16 +96,6 @@ class Product(models.Model):
 
     def __str__(self):
         return f'{self.product_name} {self.price} {self.quantity}'
-
-
-class Image(models.Model):
-    description = models.CharField(max_length = 35, help_text = 'Enter a description for this image.')
-    
-    image = models.ImageField(upload_to = './pictures/') 
-    #uploaded_by = models.ForeignKey(User) #when user is deleted delete all of their pictures?
-
-    def __str__(self):
-        return f'{self.id}'    
 
 
 class Order(models.Model):
