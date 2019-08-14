@@ -67,19 +67,23 @@ class Product(models.Model):
     
     seller = models.ForeignKey(User, on_delete = models.CASCADE, null=True)
 
-    pictures = models.ManyToManyField(Image, help_text = 'Select some pictures for this product.')
+    pictures = models.ManyToManyField(Image, blank=True, help_text = 'Select some pictures for this product.')
 
-    # The price of the product must be between $0.01 and $9,999.99
+    # The price of the product must be between $0.01 and $99,999.99
     price = models.DecimalField(
-        max_digits = 6,
+        max_digits = 7,
         decimal_places = 2,
-        help_text = 'Enter the price of this product.'
+        help_text = 'Enter the price of this product.',
+        validators = [
+            MinValueValidator(0.01),
+            MaxValueValidator(99999.99),
+        ]
     )
     
     description = models.TextField(max_length = 2500, help_text = 'Enter a description for this product.')
 
     # The quantity must be 0 or more
-    quantity_available = models.IntegerField()
+    quantity_available = models.PositiveIntegerField()
 
     # The number of this product sold since it was listed
     # Should not be editable by the user
@@ -95,7 +99,7 @@ class Product(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.product_name} {self.price} {self.quantity}'
+        return f'{self.name} sold by {self.seller}'
 
 
 class Order(models.Model):
