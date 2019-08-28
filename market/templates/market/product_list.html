@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <br>
+    <p>Product List</p>
+    {% if inventory %}
+    <ul>
+        {% for product in inventory %}
+            <li>
+                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a> ${{ product.price }} | {{ product.quantity_available }} available
+            </li>
+
+            <!-- link/button to add this item to cart -->
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>{{ user.first_name }} has nothing for sale.</p>
+    {% endif %}
+{% endblock %}

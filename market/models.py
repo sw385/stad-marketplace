@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import date
 from PIL import Image
-
+from django.urls import reverse
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 import uuid # Required for unique id
 
@@ -49,25 +49,15 @@ class Category(models.Model):
          verbose_name_plural = 'categories'
 
      def __str__(self):
-         return f'{self.name}'
-
-
-class Image(models.Model):
-    description = models.CharField(max_length = 35, help_text = 'Enter a description for this image.')
-    
-    image = models.ImageField(upload_to = './pictures/') 
-    uploaded_by = models.ForeignKey(User, on_delete = models.CASCADE, null=True) #when user is deleted delete all of their pictures?
-
-    def __str__(self):
-        return f'{self.id}'    
+         return f'{self.name}' 
 
 
 class Product(models.Model):
     name = models.CharField(max_length = 50)
     
-    seller = models.ForeignKey(User, on_delete = models.CASCADE, null=True)
-
-    pictures = models.ManyToManyField(Image, blank=True, help_text = 'Select some pictures for this product.')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='The unique ID for this product.')
+    '''on_delete = models.CASCADE,'''
+    seller = models.ForeignKey(User, on_delete = models.CASCADE, null=False)
 
     # The price of the product must be between $0.01 and $99,999.99
     price = models.DecimalField(
@@ -82,8 +72,13 @@ class Product(models.Model):
     
     description = models.TextField(max_length = 2500, help_text = 'Enter a description for this product.')
 
-    # The quantity must be 0 or more
-    quantity_available = models.PositiveIntegerField()
+    # The quantity must be 1 or more
+    quantity_available = models.PositiveIntegerField(
+        validators = [
+            MinValueValidator(1),
+            MaxValueValidator(999),
+        ]
+    )
 
     # The number of this product sold since it was listed
     # Should not be editable by the user
@@ -96,11 +91,28 @@ class Product(models.Model):
     added_at = models.DateTimeField(auto_now_add = True)
 
     # The time and date when the item was last updated
-    last_updated = models.DateTimeField(auto_now=True)
+    last_updated = models.DateTimeField(auto_now = True)
+
+    # Items that still have viewable pages but are no longer for sale are marked as delisted.
+    delisted = models.BooleanField(default = False, help_text = 'Delisting an item marks it as no longer available.')
+
+    def get_absolute_url(self):
+        return reverse('product-detail', args=[str(self.id)])
 
     def __str__(self):
         return f'{self.name} sold by {self.seller}'
 
+
+class Image(models.Model):
+    description = models.CharField(max_length = 35, help_text = 'Enter a description for this image.')
+    
+    image = models.ImageField(upload_to = './pictures/') 
+    uploaded_by = models.ForeignKey(User, on_delete = models.CASCADE, null=True) #when user is deleted delete all of their pictures
+    product = models.ForeignKey(Product, on_delete = models.CASCADE, null=True)
+
+    def __str__(self):
+        return f'{self.id}'   
+        
 
 class Order(models.Model):
     # id = models.AutoField(primary_key=True)
@@ -164,5 +176,3 @@ class OrderedProduct(models.Model):
         # return the name of the product and quantity
         return f'{self.product}: {self.quantity}'
         
-
-

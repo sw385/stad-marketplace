@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>{{ product.name }}</h1>
+
+    <p><strong>Name: </strong>{{ product.name }}</p>
+    <p><strong>Sold by: </strong><a href="">{{ product.seller }}</a></p>
+    <p><Strong>Item description: </Strong>{{ product.description }}</p>
+
+    <p>Quantity available: {{ product.quantity_available }} | Quantity sold: {{ product.quantity_sold }}</p>
+    <p><Strong>Category: </Strong>{{ product.category }}</p>
+
+    <!-- 
+        if item is delisted, state that it is no longer for sale
+
+        otherwise show a button to add this item to cart
+
+     -->
+{% endblock %}
+
+
+
+
+

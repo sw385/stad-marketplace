@@ -2,7 +2,10 @@ from django.contrib import admin
 from market.models import Product, Category, Image, Order, OrderedProduct, User
 
 
-admin.site.register(Product)
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'seller', 'quantity_available', 'quantity_sold')
+
 admin.site.register(Category)
 admin.site.register(Image)
 
