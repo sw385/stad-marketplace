@@ -9,4 +9,4 @@ date       | work on    | description
 ?          | model/view | separate user and administrator pages and make login page 
 
 
-<p><img src="https://user-images.githubusercontent.com/30683150/64276746-aa9a9b80-cf16-11e9-87c5-0c657a42497a.png" alt="test" width="700" height="200"></p>           
+<p><img src="https://user-images.githubusercontent.com/30683150/64276746-aa9a9b80-cf16-11e9-87c5-0c657a42497a.png" alt="test" width="600" height="180"></p>           
