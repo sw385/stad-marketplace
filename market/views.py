@@ -8,6 +8,24 @@ from django.core.paginator import Paginator
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import View
 
+# nancy: index page for showing number of products and vendors
+def index(request):
+    """View function for home page of site."""
+
+    # Generate counts of some of the main objects
+    num_users = User.objects.count()
+    #num_products = Product.objects.all.count()
+    #num_vendors =
+
+    context = {
+        'num_users' : num_users,
+        #'num_products' : num_products,
+    }
+
+
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'index.html', context=context)
+
 # Page for each user which displays the products they have for sale
 '''    add paginate   '''
 def Products(request, username):
