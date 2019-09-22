@@ -2,12 +2,13 @@
 
 {% block content %}
     <br>
-    <p>Product List</p>
-    {% if inventory %}
+    <p>Products List</p>
+    {% if product_list %}
     <ul>
-        {% for product in inventory %}
+        {% for product in product_list %}
             <li>
                 <a href="{{ product.get_absolute_url }}">{{ product.name }}</a> ${{ product.price }} | {{ product.quantity_available }} available
+                <p>Sold by: <a href="{{ product.seller.get_absolute_url}}"> {{ product.seller }} </a> </p>
             </li>
 
             <!-- link/button to add this item to cart -->

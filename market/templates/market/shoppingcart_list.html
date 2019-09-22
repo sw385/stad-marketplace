@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <br>
+    <p>Shopping Cart List</p>
+    
+    {% if shoppingcart_list %}
+    <ul>
+        {% for shoppingcart in shoppingcart_list %}
+            <li><a href="{{ shoppingcart.get_absolute_url }}">{{ shoppingcart.buyer }}</a></li>
+        {% endfor %}
+    </ul>
+
+
+    {% else %}
+    <p>There are no shopping carts at all in the database.</p>
+    {% endif %}
+    
+{% endblock %}
