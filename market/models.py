@@ -37,14 +37,14 @@ class User(AbstractBaseUser):
 
     # Method
     def __str__(self):
-        return f'{self.username}, {self.last_name} {self.first_name}'
+        return f'{self.username} ({self.first_name} {self.last_name})'
 
     def get_absolute_url(self):
         """Returns the url to access a particular instances of the model. """
         return reverse('user-detail', args=[str(self.username)])
 
 class Category(models.Model):
-    name = models.CharField(primary_key=True, max_length=30, help_text='Enter a name for this category.')
+    name = models.CharField(primary_key=True, max_length=30, unique=True, help_text='Enter a name for this category.')
      
     class Meta:
         verbose_name_plural = 'categories'

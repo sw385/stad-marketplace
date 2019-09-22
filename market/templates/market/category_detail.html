@@ -1,21 +1,21 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>{{ product.name }}</h1>
+    <h1>{{ category.name }}</h1>
 
-    <p><strong>Name: </strong>{{ product.name }}</p>
-    <p><strong>Sold by: </strong><a href="">{{ product.seller }}</a></p>
-    <p><Strong>Item description: </Strong>{{ product.description }}</p>
+    <p><strong>Number of items in this category: </strong>{{ category.product_set.count }}</p>
+    
+    <div style="margin-left:20px;margin-top:20px">
+        <h4>Products for sale</h4>
 
-    <p>Quantity available: {{ product.quantity_available }} | Quantity sold: {{ product.quantity_sold }}</p>
-    <p><Strong>Category: </Strong>{{ product.category }}</p>
+        {% for product in category.product_set.all %}
+            <hr>
+            <p><a href="{{ product.get_absolute_url }}">{{ product.name }}</a> (Category: {{category.name}}) ${{ product.price }}</p>
+            <p>Sold by: <a href="{{ product.seller.get_absolute_url }}">{{ product.seller }}</a></p>
+            <p> {{ product.description }} </p>
+        {% endfor %}
+    </div>
 
-    <!-- 
-        if item is delisted, state that it is no longer for sale
-
-        otherwise show a button to add this item to cart
-
-     -->
 {% endblock %}
 
 
