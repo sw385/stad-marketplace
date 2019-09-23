@@ -17,6 +17,24 @@
             <hr>
             <p><a href="{{ orderedproduct.product.get_absolute_url }}"> {{ orderedproduct.product.name }} </a>| Quantity: {{ orderedproduct.quantity }} × ${{ orderedproduct.product.price }}</p>
             <p>Sold by: <a href="{{ orderedproduct.product.seller.get_absolute_url }}"> {{ orderedproduct.product.seller }} </a> </p>
+            <p> Status: 
+                {% if orderedproduct.status != 'p' %} Order placed
+                {% elif orderedproduct.status != 'r' %} Order received
+                {% elif orderedproduct.status != 's' %} Product Shipped
+                {% elif orderedproduct.status != 'd' %} Product Delivered
+                {% endif %}
+            
+            </p>
+            <p>
+                {% if orderedproduct.product.category.all.count  == 1 %} Category: 
+                {% elif orderedproduct.product.category.all.count  > 1 %} Categories: 
+                {% endif %}
+                
+                {% for category in orderedproduct.product.category.all %}
+                    <a href="{{category.get_absolute_url}}"> {{category}}</a>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
         {% endfor %}
     </div>
     

@@ -15,6 +15,7 @@
       <div class="col-sm-2">
       {% block sidebar %}
         <ul class="sidebar-nav">
+        
           <li><a href="{% url 'index' %}">Home</a></li>
           <li><a href="{% url 'user-list' %}">All users</a></li>
           <li><a href="{% url 'product-list' %}">All products</a></li>
@@ -22,6 +23,19 @@
           <li><a href="{% url 'shoppingcart-list' %}">All shopping carts</a></li>
           <li><a href="{% url 'category-list' %}">All categories</a></li>
           <!-- <li><a href="">All vendors</a></li> -->
+
+          <hr>
+          
+          <li><a href="">Username</a></li>
+          <li><a href="">Shopping Cart</a></li>
+          <li><a href="">Order History</a></li>
+          
+          <hr>
+          
+          <li><a href="">Storefront</a></li>
+          <li><a href="">Orders Received</a></li>
+          <li><a href="">Orders Fulfilled</a></li>
+
         </ul>
      {% endblock %}
       </div>
