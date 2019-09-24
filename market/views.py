@@ -15,12 +15,17 @@ def index(request):
 
     # Generate counts of some of the main objects
     num_users = User.objects.count()
-    #num_products = Product.objects.all.count()
-    #num_vendors =
+    num_products = Product.objects.count()
+    num_orders = Order.objects.count()
+    num_shoppingcarts = ShoppingCart.objects.count()
+    num_categories = Category.objects.count()
 
     context = {
         'num_users' : num_users,
-        #'num_products' : num_products,
+        'num_products' : num_products,
+        'num_orders' : num_orders,
+        'num_shoppingcarts' : num_shoppingcarts,
+        'num_categories' : num_categories,   
     }
 
     # Render the HTML template index.html with the data in the context variable

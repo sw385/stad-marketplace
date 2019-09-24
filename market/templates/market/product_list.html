@@ -9,6 +9,7 @@
             <li>
                 <a href="{{ product.get_absolute_url }}">{{ product.name }}</a> ${{ product.price }} | {{ product.quantity_available }} available
                 <p>Sold by: <a href="{{ product.seller.get_absolute_url}}"> {{ product.seller }} </a> </p>
+                <p>Last updated: {{ product.last_updated }} </p>
                 <p>
                     {% if product.category.all.count  == 1 %} Category: 
                     {% elif product.category.all.count  > 1 %} Categories: 
