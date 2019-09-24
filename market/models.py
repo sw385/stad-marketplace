@@ -37,7 +37,7 @@ class User(AbstractBaseUser):
 
     # Method
     def __str__(self):
-        return f'{self.username} ({self.first_name} {self.last_name})'
+        return f'{self.username}'
 
     def get_absolute_url(self):
         """Returns the url to access a particular instances of the model. """
@@ -261,7 +261,7 @@ class ShoppingCart(models.Model):
     # billing address is unimplemented, will probably be similar to shipping address
     
     def __str__(self):
-        return f'{self.id}'
+        return f'{self.buyer}'
         
     def get_absolute_url(self):
         """Returns the url to access a particular instances of the model. """
