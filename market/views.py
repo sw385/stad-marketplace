@@ -44,7 +44,7 @@ class ProductDetailView(generic.DetailView):
     
 class ProductListView(generic.ListView):
     model = Product
-    paginate_by = 12
+    paginate_by = 4
 
 
 # Page with a form for user to add a new product for sale.
@@ -72,7 +72,7 @@ class OrderListView(generic.ListView):
     # queryset = Book.objects.filter(title__icontains='p')[:5] # Get 5 books containing the title war
     # queryset = Book.objects.order_by('title')
     # template_name = 'books/my_arbitrary_template_name_list.html'  # Specify your own template name/location
-    paginate_by = 12
+    paginate_by = 4
     
 class OrderDetailView(generic.DetailView):
     model = Order
@@ -83,7 +83,7 @@ class ShoppingCartListView(generic.ListView):
     # queryset = Book.objects.filter(title__icontains='p')[:5] # Get 5 books containing the title war
     # queryset = Book.objects.order_by('title')
     # template_name = 'books/my_arbitrary_template_name_list.html'  # Specify your own template name/location
-    paginate_by = 12
+    paginate_by = 4
     
 class ShoppingCartDetailView(generic.DetailView):
     model = ShoppingCart
@@ -94,7 +94,7 @@ class UserListView(generic.ListView):
     # queryset = Book.objects.filter(title__icontains='p')[:5] # Get 5 books containing the title war
     # queryset = Book.objects.order_by('title')
     # template_name = 'books/my_arbitrary_template_name_list.html'  # Specify your own template name/location
-    paginate_by = 12
+    paginate_by = 4
     
 class UserDetailView(generic.DetailView):
     model = User
@@ -105,7 +105,7 @@ class CategoryListView(generic.ListView):
     # queryset = Book.objects.filter(title__icontains='p')[:5] # Get 5 books containing the title war
     # queryset = Book.objects.order_by('title')
     # template_name = 'books/my_arbitrary_template_name_list.html'  # Specify your own template name/location
-    paginate_by = 12
+    paginate_by = 4
     
 class CategoryDetailView(generic.DetailView):
     model = Category

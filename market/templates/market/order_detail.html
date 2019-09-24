@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>{{ order.id }}</h1>
+    <h1>Order ID: {{ order.id }}</h1>
 
     <p><strong>Order placed by: </strong> <a href="{{ order.buyer.get_absolute_url}}">{{ order.buyer }}</a></p>
     <p><strong>Date placed: </strong>{{ order.date_ordered }}</p>
