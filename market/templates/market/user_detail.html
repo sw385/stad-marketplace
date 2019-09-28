@@ -1,0 +1,100 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <h1>Username: {{ user.username }}</h1>
+
+    <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    
+    <p><strong>Date of birth:</strong> {{ user.date_of_birth }}</p>
+    <p><strong>E-mail:</strong> {{ user.email }}</p>
+    <p><strong>Phone:</strong> {{ user.phone }}</p>
+    <p><strong>Address:</strong> {{ user.address }}</p>
+    <p><strong>State:</strong> {{ user.state }}</p>
+    <p><strong>City:</strong> {{ user.city }}</p>
+    <p><strong>Zip Code:</strong> {{ user.zip_code }}</p>
+
+    <div style="margin-left:20px;margin-top:20px">
+        <h4>Shopping Cart</h4>
+        <p> Shopping Cart ID: <a href="{{ user.shoppingcart }}"> {{ order.id }} </a></p>
+
+        {% for item in user.shoppingcart_set.all %}
+            <hr>
+            <p> OrderedProduct ID: <a href="{{ order.get_absolute_url }}"> {{ order.id }} </a></p>
+            {% for orderedproduct in order.orderedproduct_set.all %}
+                <p><a href="{{ orderedproduct.product.get_absolute_url }}"> {{ orderedproduct.product.name }} </a>| Quantity: {{ orderedproduct.quantity }} ${{ orderedproduct.product.price }} each</p>
+            {% endfor %}
+
+        {% endfor %}
+        <hr>
+    </div>
+
+    <div style="margin-left:20px;margin-top:20px">
+        <h4>Products for sale</h4>
+        
+        {% for product in user.product_set.all %}
+            <hr>
+            <p><a href="{{ product.get_absolute_url }}">{{ product.name }}</a> ${{ product.price }}</p>
+            <p> {{ product.description }} </p>
+            <p><Strong>
+                {% if product.category.all.count  == 1 %} Category: 
+                {% elif product.category.all.count  > 1 %} Categories: 
+                {% endif %}
+                </Strong>
+                    {% for category in product.category.all %}
+                        <a href="{{category.get_absolute_url}}">{{category}}</a>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+            </p>
+        {% endfor %}
+        <hr>
+    </div>
+    
+    <div style="margin-left:20px;margin-top:20px">
+        <h4>Order history</h4>
+
+        {% for order in user.order_set.all %}
+            <hr>
+            <p> Order ID: <a href="{{ order.get_absolute_url }}"> {{ order.id }} </a></p>
+            {% for orderedproduct in order.orderedproduct_set.all %}
+                <p><a href="{{ orderedproduct.product.get_absolute_url }}"> {{ orderedproduct.product.name }} </a> | Sold by: <a href="{{ orderedproduct.product.seller.get_absolute_url}}"> {{ orderedproduct.product.seller }} </a> | Quantity: {{ orderedproduct.quantity }} ${{ orderedproduct.product.price }} each</p>
+            {% endfor %}
+
+        {% endfor %}
+        <hr>
+    </div>
+    
+    <div style="margin-left:20px;margin-top:20px">
+        <h4>Orders received</h4>
+
+        {% for orderedproduct in user.orderedproduct_set.all %}
+            <hr>
+            <p> Order ID: <a href="{{ order.get_absolute_url }}"> {{ order.id }} </a></p>
+            {% for orderedproduct in order.orderedproduct_set.all %}
+                <p><a href="{{ orderedproduct.product.get_absolute_url }}"> {{ orderedproduct.product.name }} </a>| Quantity: {{ orderedproduct.quantity }} ${{ orderedproduct.product.price }} each</p>
+            {% endfor %}
+
+        {% endfor %}
+        <hr>
+    </div>
+    
+    <div style="margin-left:20px;margin-top:20px">
+        <h4>Orders fulfilled</h4>
+
+        {% for order in user.order_set.all %}
+            <hr>
+            <p> Order ID: <a href="{{ order.get_absolute_url }}"> {{ order.id }} </a></p>
+            {% for orderedproduct in order.orderedproduct_set.all %}
+                <p><a href="{{ orderedproduct.product.get_absolute_url }}"> {{ orderedproduct.product.name }} </a>| Quantity: {{ orderedproduct.quantity }} ${{ orderedproduct.product.price }} each</p>
+            {% endfor %}
+
+        {% endfor %}
+        <hr>
+    </div>
+    
+{% endblock %}
+
+
+
+
+

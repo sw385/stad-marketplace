@@ -1,5 +1,5 @@
 from django.contrib import admin
-from market.models import Product, Category, Image, Order, OrderedProduct, User
+from market.models import Product, Category, Image, Order, OrderedProduct, User, ShoppingCart, ShoppingCartProduct
 
 
 @admin.register(Product)
@@ -11,6 +11,9 @@ admin.site.register(Image)
 
 admin.site.register(Order)
 admin.site.register(OrderedProduct)
+
+admin.site.register(ShoppingCart)
+admin.site.register(ShoppingCartProduct)
 
 # admin.site.register(User)
 
