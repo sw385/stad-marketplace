@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from market.models import Product, User
+from market.models import Order, ShoppingCart, Category
 
 from django.core.paginator import Paginator
 
@@ -14,14 +15,18 @@ def index(request):
 
     # Generate counts of some of the main objects
     num_users = User.objects.count()
-    #num_products = Product.objects.all.count()
-    #num_vendors =
+    num_products = Product.objects.count()
+    num_orders = Order.objects.count()
+    num_shoppingcarts = ShoppingCart.objects.count()
+    num_categories = Category.objects.count()
 
     context = {
         'num_users' : num_users,
-        #'num_products' : num_products,
+        'num_products' : num_products,
+        'num_orders' : num_orders,
+        'num_shoppingcarts' : num_shoppingcarts,
+        'num_categories' : num_categories,   
     }
-
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
@@ -41,6 +46,10 @@ def Products(request, username):
 # Page for each individual item
 class ProductDetailView(generic.DetailView):
     model = Product
+    
+class ProductListView(generic.ListView):
+    model = Product
+    paginate_by = 4
 
 
 # Page with a form for user to add a new product for sale.
@@ -56,3 +65,52 @@ class ProductCreate(CreateView):
         product.save()
         return HttpResponseRedirect(self.get_success_url())
     '''
+
+
+
+
+# from django.views import generic
+
+class OrderListView(generic.ListView):
+    model = Order
+    # context_object_name = 'my_book_list'   # your own name for the list as a template variable
+    # queryset = Book.objects.filter(title__icontains='p')[:5] # Get 5 books containing the title war
+    # queryset = Book.objects.order_by('title')
+    # template_name = 'books/my_arbitrary_template_name_list.html'  # Specify your own template name/location
+    paginate_by = 4
+    
+class OrderDetailView(generic.DetailView):
+    model = Order
+    
+class ShoppingCartListView(generic.ListView):
+    model = ShoppingCart
+    # context_object_name = 'my_book_list'   # your own name for the list as a template variable
+    # queryset = Book.objects.filter(title__icontains='p')[:5] # Get 5 books containing the title war
+    # queryset = Book.objects.order_by('title')
+    # template_name = 'books/my_arbitrary_template_name_list.html'  # Specify your own template name/location
+    paginate_by = 4
+    
+class ShoppingCartDetailView(generic.DetailView):
+    model = ShoppingCart
+
+class UserListView(generic.ListView):
+    model = User
+    # context_object_name = 'my_book_list'   # your own name for the list as a template variable
+    # queryset = Book.objects.filter(title__icontains='p')[:5] # Get 5 books containing the title war
+    # queryset = Book.objects.order_by('title')
+    # template_name = 'books/my_arbitrary_template_name_list.html'  # Specify your own template name/location
+    paginate_by = 4
+    
+class UserDetailView(generic.DetailView):
+    model = User
+    
+class CategoryListView(generic.ListView):
+    model = Category
+    # context_object_name = 'my_book_list'   # your own name for the list as a template variable
+    # queryset = Book.objects.filter(title__icontains='p')[:5] # Get 5 books containing the title war
+    # queryset = Book.objects.order_by('title')
+    # template_name = 'books/my_arbitrary_template_name_list.html'  # Specify your own template name/location
+    paginate_by = 4
+    
+class CategoryDetailView(generic.DetailView):
+    model = Category

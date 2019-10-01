@@ -4,11 +4,21 @@
     <h1>{{ product.name }}</h1>
 
     <p><strong>Name: </strong>{{ product.name }}</p>
-    <p><strong>Sold by: </strong><a href="">{{ product.seller }}</a></p>
+    <p><strong>Sold by: </strong><a href="{{ product.seller.get_absolute_url }}">{{ product.seller }}</a></p>
+    <p><Strong>Price: </Strong>${{ product.price }}</p>
     <p><Strong>Item description: </Strong>{{ product.description }}</p>
 
     <p>Quantity available: {{ product.quantity_available }} | Quantity sold: {{ product.quantity_sold }}</p>
-    <p><Strong>Category: </Strong>{{ product.category }}</p>
+    <p><Strong>
+        {% if product.category.all.count  == 1 %} Category: 
+        {% elif product.category.all.count  > 1 %} Categories: 
+        {% endif %}
+        </Strong>
+            {% for category in product.category.all %}
+                <a href="{{category.get_absolute_url}}"> {{category}}</a>
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+    </p>
 
     <!-- 
         if item is delisted, state that it is no longer for sale

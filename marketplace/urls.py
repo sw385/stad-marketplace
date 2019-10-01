@@ -8,6 +8,8 @@ urlpatterns = [
 	path('market/', include('market.urls')), # nancy: index page 
     path('admin/', admin.site.urls),
     path('', include('market.urls')),
+    # Add Django site authentication urls (for login, logout, password management)
+    path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

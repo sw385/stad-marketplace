@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>{{ shoppingcart.buyer }}'s shopping cart</h1>
+
+    {% for shoppingcartproduct in shoppingcart.shoppingcartproduct_set.all %}
+        <hr>
+        <p><a href="{{ shoppingcartproduct.product.get_absolute_url }}"> {{ shoppingcartproduct.product.name }} </a>| Quantity: {{ shoppingcartproduct.quantity }} × ${{ shoppingcartproduct.product.price }}</p>
+        <p>Sold by: <a href="{{ shoppingcartproduct.product.seller.get_absolute_url }}"> {{ shoppingcartproduct.product.seller }} </a> </p>
+        <p>
+            {% if shoppingcartproduct.product.category.all.count  == 1 %} Category: 
+            {% elif shoppingcartproduct.product.category.all.count  > 1 %} Categories: 
+            {% endif %}
+            
+            {% for category in shoppingcartproduct.product.category.all %}
+                <a href="{{category.get_absolute_url}}"> {{category}}</a>
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+    {% endfor %}
+        
+{% endblock %}
+
+
+
+
+
