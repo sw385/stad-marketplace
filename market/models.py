@@ -7,13 +7,14 @@ import uuid # Required for unique id
 
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+#class CustomManager(BaseUserManager): #new
 
-class User(AbstractBaseUser):
+
+class User(AbstractBaseUser): #new
     # Fields
     # id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID')
     username = models.CharField(primary_key=True, max_length=30, help_text='Enter a unique username.', blank=False)
     # username = models.CharField(max_length=25)
-    USERNAME_FIELD = 'username'
     #password =
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -31,6 +32,11 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
+    #object = MyUserManager() #new
+
+    USERNAME_FIELD = 'username'
+    #REQUIRED_FIELDS = [] #new
+
     # Meta
     class Meta:
         ordering = ['first_name', 'last_name']
@@ -42,6 +48,7 @@ class User(AbstractBaseUser):
     def get_absolute_url(self):
         """Returns the url to access a particular instances of the model. """
         return reverse('user-detail', args=[str(self.username)])
+
 
 class Category(models.Model):
     name = models.CharField(primary_key=True, max_length=30, unique=True, help_text='Enter a name for this category.')
