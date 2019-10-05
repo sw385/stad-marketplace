@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load staticfiles %}
 
 {% block content %}
     <h1>Order ID: {{ order.id }}</h1>
@@ -15,13 +16,18 @@
 
         {% for orderedproduct in order.orderedproduct_set.all %}
             <hr>
+            
             <p><a href="{{ orderedproduct.product.get_absolute_url }}"> {{ orderedproduct.product.name }} </a>| Quantity: {{ orderedproduct.quantity }} × ${{ orderedproduct.product.price }}</p>
+            
+            <img src="{% static orderedproduct.product.local_image %}" alt="Product image alt text here."/>
+            <br>
+            
             <p>Sold by: <a href="{{ orderedproduct.product.seller.get_absolute_url }}"> {{ orderedproduct.product.seller }} </a> </p>
             <p> Status: 
-                {% if orderedproduct.status != 'p' %} Order placed
-                {% elif orderedproduct.status != 'r' %} Order received
-                {% elif orderedproduct.status != 's' %} Product Shipped
-                {% elif orderedproduct.status != 'd' %} Product Delivered
+                {% if orderedproduct.status == 'p' %} Order placed
+                {% elif orderedproduct.status == 'r' %} Order received
+                {% elif orderedproduct.status == 's' %} Product Shipped
+                {% elif orderedproduct.status == 'd' %} Product Delivered
                 {% endif %}
             
             </p>

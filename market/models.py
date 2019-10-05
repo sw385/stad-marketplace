@@ -109,6 +109,9 @@ class Product(models.Model):
     # Items that still have viewable pages but are no longer for sale are marked as delisted.
     delisted = models.BooleanField(default = False, help_text = 'Delisting an item marks it as no longer available.')
     
+    # local_image = models.CharField(max_length=50, default='')
+    local_image = models.CharField(max_length=50)
+    
     class Meta:
         ordering = ['-last_updated']
 
@@ -200,6 +203,15 @@ class OrderedProduct(models.Model):
         help_text = 'Enter the price of this product.',
         # editable = False,
     )
+    
+    # the total = price * quantity
+    total = models.DecimalField(
+        max_digits = 6,
+        decimal_places = 2,
+        help_text = 'Enter the total = price * quantity of this product.',
+        # editable = False,
+        default = 0,
+    )
 
     ITEM_STATUS = (
         ('p', 'Order placed'),
@@ -238,9 +250,6 @@ class ShoppingCart(models.Model):
     # buyer = models.ForeignKey(User, primary_key=True, on_delete=models.CASCADE, null=False, default='NONE')
     buyer = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, null=False)
         
-    # time and date the order was submitted
-    date_ordered = models.DateTimeField(auto_now_add = True)
-    
     # the fields in Order should not be directly editable, but they should be for development
     subtotal = models.DecimalField(
         max_digits = 6,
@@ -258,15 +267,6 @@ class ShoppingCart(models.Model):
         default = 0,
     )
         
-    # shipping address
-    address = models.CharField(max_length=255, default='')
-    city = models.CharField(max_length=30, default='')
-    state = models.CharField(max_length=30, default='')
-    zip_code = models.CharField(max_length=10, default='')
-    # payment method
-    payment_method = models.CharField(max_length=16, default='')
-    # billing address is unimplemented, will probably be similar to shipping address
-    
     def __str__(self):
         return f'{self.buyer}'
         
@@ -295,6 +295,15 @@ class ShoppingCartProduct(models.Model):
         decimal_places = 2,
         help_text = 'Enter the price of this product.',
         # editable = False,
+    )
+    
+    # the total = price * quantity
+    total = models.DecimalField(
+        max_digits = 6,
+        decimal_places = 2,
+        help_text = 'Enter the total = price * quantity of this product.',
+        # editable = False,
+        default = 0,
     )
     
     # time and date the item was added to the shopping cart

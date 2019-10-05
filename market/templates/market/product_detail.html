@@ -1,7 +1,10 @@
 {% extends "base_generic.html" %}
+{% load staticfiles %}
 
 {% block content %}
     <h1>{{ product.name }}</h1>
+    
+    <img src="{% static product.local_image %}" alt="Product image alt text here."/>
 
     <p><strong>Name: </strong>{{ product.name }}</p>
     <p><strong>Sold by: </strong><a href="{{ product.seller.get_absolute_url }}">{{ product.seller }}</a></p>
