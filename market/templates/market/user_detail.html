@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load staticfiles %}
 
 {% block content %}
 
@@ -15,26 +16,12 @@
     <p><strong>Zip Code:</strong> {{ user.zip_code }}</p>
 
     <div style="margin-left:20px;margin-top:20px">
-        <h4>Shopping Cart</h4>
-        <p> Shopping Cart ID: <a href="{{ user.shoppingcart }}"> {{ order.id }} </a></p>
-
-        {% for item in user.shoppingcart_set.all %}
-            <hr>
-            <p> OrderedProduct ID: <a href="{{ order.get_absolute_url }}"> {{ order.id }} </a></p>
-            {% for orderedproduct in order.orderedproduct_set.all %}
-                <p><a href="{{ orderedproduct.product.get_absolute_url }}"> {{ orderedproduct.product.name }} </a>| Quantity: {{ orderedproduct.quantity }} ${{ orderedproduct.product.price }} each</p>
-            {% endfor %}
-
-        {% endfor %}
-        <hr>
-    </div>
-
-    <div style="margin-left:20px;margin-top:20px">
         <h4>Products for sale</h4>
-        
+
         {% for product in user.product_set.all %}
             <hr>
             <p><a href="{{ product.get_absolute_url }}">{{ product.name }}</a> ${{ product.price }}</p>
+            <a href="{{ orderedproduct.product.get_absolute_url }}"><img src="{% static product.local_image %}" alt="Product image alt text here."/></a>
             <p> {{ product.description }} </p>
             <p><Strong>
                 {% if product.category.all.count  == 1 %} Category: 
@@ -58,39 +45,13 @@
             <p> Order ID: <a href="{{ order.get_absolute_url }}"> {{ order.id }} </a></p>
             {% for orderedproduct in order.orderedproduct_set.all %}
                 <p><a href="{{ orderedproduct.product.get_absolute_url }}"> {{ orderedproduct.product.name }} </a> | Sold by: <a href="{{ orderedproduct.product.seller.get_absolute_url}}"> {{ orderedproduct.product.seller }} </a> | Quantity: {{ orderedproduct.quantity }} ${{ orderedproduct.product.price }} each</p>
+                <a href="{{ orderedproduct.product.get_absolute_url }}"><img src="{% static orderedproduct.product.local_image %}" alt="Product image alt text here." width="100px"/></a>
             {% endfor %}
 
         {% endfor %}
         <hr>
     </div>
-    
-    <div style="margin-left:20px;margin-top:20px">
-        <h4>Orders received</h4>
 
-        {% for orderedproduct in user.orderedproduct_set.all %}
-            <hr>
-            <p> Order ID: <a href="{{ order.get_absolute_url }}"> {{ order.id }} </a></p>
-            {% for orderedproduct in order.orderedproduct_set.all %}
-                <p><a href="{{ orderedproduct.product.get_absolute_url }}"> {{ orderedproduct.product.name }} </a>| Quantity: {{ orderedproduct.quantity }} ${{ orderedproduct.product.price }} each</p>
-            {% endfor %}
-
-        {% endfor %}
-        <hr>
-    </div>
-    
-    <div style="margin-left:20px;margin-top:20px">
-        <h4>Orders fulfilled</h4>
-
-        {% for order in user.order_set.all %}
-            <hr>
-            <p> Order ID: <a href="{{ order.get_absolute_url }}"> {{ order.id }} </a></p>
-            {% for orderedproduct in order.orderedproduct_set.all %}
-                <p><a href="{{ orderedproduct.product.get_absolute_url }}"> {{ orderedproduct.product.name }} </a>| Quantity: {{ orderedproduct.quantity }} ${{ orderedproduct.product.price }} each</p>
-            {% endfor %}
-
-        {% endfor %}
-        <hr>
-    </div>
     
 {% endblock %}
 

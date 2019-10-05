@@ -137,13 +137,13 @@ class Image(models.Model):
 class Order(models.Model):
     # id = models.AutoField(primary_key=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, help_text='Unique order number')
-        
+
     # time and date the order was submitted
     date_ordered = models.DateTimeField(auto_now_add = True)
     
     # ForeignKey of the buyer
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    
+
     # the fields in Order should not be directly editable, but they should be for development
     subtotal = models.DecimalField(
         max_digits = 6,

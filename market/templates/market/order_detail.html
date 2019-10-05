@@ -19,7 +19,7 @@
             
             <p><a href="{{ orderedproduct.product.get_absolute_url }}"> {{ orderedproduct.product.name }} </a>| Quantity: {{ orderedproduct.quantity }} × ${{ orderedproduct.product.price }}</p>
             
-            <img src="{% static orderedproduct.product.local_image %}" alt="Product image alt text here."/>
+            <a href="{{ orderedproduct.product.get_absolute_url }}"><img src="{% static orderedproduct.product.local_image %}" alt="Product image alt text here."/></a>
             <br>
             
             <p>Sold by: <a href="{{ orderedproduct.product.seller.get_absolute_url }}"> {{ orderedproduct.product.seller }} </a> </p>
