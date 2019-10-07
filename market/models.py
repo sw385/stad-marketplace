@@ -1,21 +1,17 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from datetime import date
 from PIL import Image
 from django.urls import reverse
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 import uuid # Required for unique id
 
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-#class CustomManager(BaseUserManager): #new
 
-
-class User(AbstractBaseUser): #new
-    # Fields
-    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID')
-    username = models.CharField(primary_key=True, max_length=30, help_text='Enter a unique username.', blank=False)
-    # username = models.CharField(max_length=25)
-    #password =
+class UserInfo(AbstractUser):
+    username = models.CharField(primary_key=True, max_length=30, blank=False)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
@@ -50,6 +46,7 @@ class User(AbstractBaseUser): #new
         return reverse('user-detail', args=[str(self.username)])
 
 
+
 class Category(models.Model):
     name = models.CharField(primary_key=True, max_length=30, unique=True, help_text='Enter a name for this category.')
      
@@ -69,8 +66,8 @@ class Product(models.Model):
     name = models.CharField(max_length = 50)
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='The unique ID for this product.')
-    '''on_delete = models.CASCADE,'''
-    seller = models.ForeignKey(User, on_delete = models.CASCADE, null=False)
+    #on_delete = models.CASCADE,
+    seller = models.ForeignKey(UserInfo, on_delete = models.CASCADE, null=False)
 
     # The price of the product must be between $0.01 and $99,999.99
     price = models.DecimalField(
@@ -123,7 +120,7 @@ class Image(models.Model):
     description = models.CharField(max_length = 35, help_text = 'Enter a description for this image.')
     
     image = models.ImageField(upload_to = './pictures/') 
-    uploaded_by = models.ForeignKey(User, on_delete = models.CASCADE, null=True) #when user is deleted delete all of their pictures
+    uploaded_by = models.ForeignKey(UserInfo, on_delete = models.CASCADE, null=True) #when user is deleted delete all of their pictures
     product = models.ForeignKey(Product, on_delete = models.CASCADE, null=True)
 
     def __str__(self):
@@ -139,7 +136,7 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now_add = True)
     
     # ForeignKey of the buyer
-    buyer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    buyer = models.ForeignKey(UserInfo, on_delete=models.CASCADE, null=True)
     
     # the fields in Order should not be directly editable, but they should be for development
     subtotal = models.DecimalField(
@@ -236,7 +233,7 @@ class ShoppingCart(models.Model):
     # market.ShoppingCart.buyer: (fields.W342) Setting unique=True on a ForeignKey has the same effect as using a OneToOneField.
         # HINT: ForeignKey(unique=True) is usually better served by a OneToOneField.
     # buyer = models.ForeignKey(User, primary_key=True, on_delete=models.CASCADE, null=False, default='NONE')
-    buyer = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, null=False)
+    buyer = models.OneToOneField(UserInfo, on_delete=models.CASCADE, primary_key=True, null=False)
         
     # time and date the order was submitted
     date_ordered = models.DateTimeField(auto_now_add = True)
@@ -309,3 +306,4 @@ class ShoppingCartProduct(models.Model):
     def __str__(self):
         # return the name of the product and quantity
         return f'{self.product}: {self.quantity}'
+
