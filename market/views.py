@@ -1,20 +1,21 @@
+# market/views.py
 from django.shortcuts import render
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from market.models import Product, User
-from market.models import Order, ShoppingCart, Category
+from users.models import CustomUser
+from market.models import Product, Order, ShoppingCart, Category
 
 from django.core.paginator import Paginator
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import View
 
-# nancy: index page for showing number of products and vendors
+
 def index(request):
     """View function for home page of site."""
 
     # Generate counts of some of the main objects
-    num_users = User.objects.count()
+    num_users = CustomUser.objects.count()
     num_products = Product.objects.count()
     num_orders = Order.objects.count()
     num_shoppingcarts = ShoppingCart.objects.count()
@@ -35,7 +36,7 @@ def index(request):
 '''    add paginate   '''
 def Products(request, username):
     # If a user with the given username (from url) does not exist 404 error
-    user = get_object_or_404(User, username = username)
+    user = get_object_or_404(CustomUser, username = username)
 
     # User does exist, so get all of user's items for sale and put in context
     inventory = Product.objects.filter(seller = user)
@@ -94,7 +95,7 @@ class ShoppingCartDetailView(generic.DetailView):
     model = ShoppingCart
 
 class UserListView(generic.ListView):
-    model = User
+    model = CustomUser
     # context_object_name = 'my_book_list'   # your own name for the list as a template variable
     # queryset = Book.objects.filter(title__icontains='p')[:5] # Get 5 books containing the title war
     # queryset = Book.objects.order_by('title')
@@ -102,7 +103,7 @@ class UserListView(generic.ListView):
     paginate_by = 4
     
 class UserDetailView(generic.DetailView):
-    model = User
+    model = CustomUser
     
 class CategoryListView(generic.ListView):
     model = Category

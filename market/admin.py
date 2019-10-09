@@ -1,6 +1,6 @@
+# market/admin.py
 from django.contrib import admin
-from market.models import Product, Category, Image, Order, OrderedProduct, User, ShoppingCart, ShoppingCartProduct
-
+from market.models import Product, Category, Image, Order, OrderedProduct, ShoppingCart, ShoppingCartProduct
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -15,9 +15,4 @@ admin.site.register(OrderedProduct)
 admin.site.register(ShoppingCart)
 admin.site.register(ShoppingCartProduct)
 
-# admin.site.register(User)
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('last_name', 'first_name', 'username', 'email')
-
-admin.site.register(User, UserAdmin)

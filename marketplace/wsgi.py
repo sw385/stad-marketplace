@@ -1,3 +1,4 @@
+# marketplace/wsgi.py
 """
 WSGI config for marketplace project.
 
