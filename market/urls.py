@@ -1,17 +1,13 @@
+# market/urls.py
 from django.urls import path
 from . import views
 
 urlpatterns = [
-	path('', views.index, name='index'), # nancy: index page
+	path('', views.index, name='index'),
     path('user/<str:username>/products', views.Products, name='user-shop'),
     path('product/<uuid:pk>/', views.ProductDetailView.as_view(), name='product-detail'),
     path('product/create/', views.ProductCreate.as_view(), name='product-create'),
     path('products/', views.ProductListView.as_view(), name='product-list'),
-    
-    
-    # path('authors/', views.AuthorListView.as_view(), name='authors-list'),
-    # path('author/<int:pk>', views.AuthorDetailView.as_view(), name='author-detail'),
-    
     path('orders/', views.OrderListView.as_view(), name='order-list'),
     path('order/<uuid:pk>', views.OrderDetailView.as_view(), name='order-detail'),
     

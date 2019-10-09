@@ -1,3 +1,4 @@
+# marketplace/settings.py
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'market.apps.MarketConfig',
-#    'market',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -44,8 +45,7 @@ ROOT_URLCONF = 'marketplace.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['./templates',],
-#            os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -111,8 +111,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Redirect to home URL after login (Default redirects to /accounts/profile)
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
-AUTH_USER_MODEL = 'market.UserInfo'
+AUTH_USER_MODEL = 'users.CustomUser'
