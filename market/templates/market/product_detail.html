@@ -4,7 +4,7 @@
     <h1>{{ product.name }}</h1>
 
     <p><strong>Name: </strong>{{ product.name }}</p>
-    <p><strong>Sold by: </strong><a href="{{ product.seller.get_absolute_url }}">{{ product.seller }}</a></p>
+    <p><strong>Sold by: </strong> <a href="{% url 'user-shop' product.seller.username %}">{{ product.seller }}</a></p>
     <p><Strong>Price: </Strong>${{ product.price }}</p>
     <p><Strong>Item description: </Strong>{{ product.description }}</p>
 
@@ -19,16 +19,13 @@
                 {% if not forloop.last %}, {% endif %}
             {% endfor %}
     </p>
+    {% if product.seller == logged_in_user %}
+        <a href="{% url 'product-update' product.id %}">Update this product</a> | 
+        <a href="{% url 'product-delete' product.id %}">Delete this product</a>
+    {% elif product.delisted %}
+        This item is no longer available.
+    {% else %}
+        <button>Add to cart</button>
+    {% endif %}
 
-    <!-- 
-        if item is delisted, state that it is no longer for sale
-
-        otherwise show a button to add this item to cart
-
-     -->
 {% endblock %}
-
-
-
-
-
