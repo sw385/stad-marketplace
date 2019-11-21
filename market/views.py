@@ -1,14 +1,17 @@
 # market/views.py
-from django.shortcuts import render
-from django.views import generic
-from django.shortcuts import get_object_or_404
-from users.models import CustomUser
-from market.models import Product, Order, ShoppingCart, Category
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
-
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect 
+from django.urls import reverse_lazy
+from django.views import generic
 from django.views.generic import View
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from market.models import Product, Order, ShoppingCart, Category
+from users.models import CustomUser
+from .forms import ProductForm
 
 
 def index(request):
@@ -33,41 +36,96 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 # Page for each user which displays the products they have for sale
-'''    add paginate   '''
-def Products(request, username):
+def Storefront(request, username):
     # If a user with the given username (from url) does not exist 404 error
     user = get_object_or_404(CustomUser, username = username)
 
     # User does exist, so get all of user's items for sale and put in context
     inventory = Product.objects.filter(seller = user)
+
+    context = {
+        'inventory': inventory, 
+        'user': user,
+        'logged_in_user': request.user
+    }
     
-    return render(request, 'market/product_list.html', context={'inventory': inventory, 'user': user})
+    return render(request, 'market/user_storefront.html', context)
 
 
 # Page for each individual item
-class ProductDetailView(generic.DetailView):
-    model = Product
+def ProductDetailView(request, pk):
+    product = get_object_or_404(Product, id=pk)
     
+    context = {
+        'product': product,
+        'logged_in_user': request.user
+    }
+
+    return render(request, 'market/product_detail.html', context)
+
+
+# Lists all products in the entire database
 class ProductListView(generic.ListView):
     model = Product
     paginate_by = 4
 
 
-# Page with a form for user to add a new product for sale.
-# Redirects to the detail view for the new item
-''' doesn't work yet - needs to set seller as the currently logged in user '''
-class ProductCreate(CreateView):
-    model = Product
-    fields = ['name', 'price', 'description', 'quantity_available', 'category']
-    '''
-    def form_valid(self, form):
-        product = form.save(commit=False)
-        product.seller = User.objects.get(seller=self.request.seller)
-        product.save()
-        return HttpResponseRedirect(self.get_success_url())
-    '''
+# Should only be viewable if user is logged in
+# The seller will automatically be set to the logged in user
+@login_required
+def NewProduct(request):
+    if request.method == "POST":
+        form = ProductForm(data=request.POST)
+
+        if form.is_valid():
+            new_product = form.save(commit=False)
+            new_product.seller = request.user
+            #new_product.published_date = timezone.now()
+            new_product.save()
+            form.save_m2m()
+        
+            return redirect('product-detail', new_product.id)
+    else:
+        form = ProductForm()
+        
+    return render(request, 'market/product_form.html', {'form': form})
 
 
+
+@login_required
+def DeleteProduct(request, pk):
+    # if the product does not exist, 404 error
+    product = get_object_or_404(Product, id=pk)
+
+    # if the product's seller is not the user requesting to delete, 403 (forbidden) error
+    if request.user != product.seller:
+        raise PermissionDenied
+
+    if request.method == 'POST':
+        product.delete()
+        return redirect('user-shop', request.user.username)
+    
+    return render(request, 'market/product_confirm_delete.html')
+
+
+@login_required
+def UpdateProduct(request, pk):
+    # if item does not exist, 404 error
+    product = get_object_or_404(Product, id=pk)
+
+    # if the product's seller is not the user requesting to update, 403 (forbidden) error
+    if request.user != product.seller:
+        raise PermissionDenied
+
+
+    # product does exist
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid():
+        form.save()
+        form.save_m2m()
+        return redirect('product-detail', product.id)    # redirect to product page instead
+    
+    return render(request, 'market/product_form.html', {'form': form}) 
 
 
 # from django.views import generic

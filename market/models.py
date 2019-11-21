@@ -9,6 +9,7 @@ from django.urls import reverse
 import uuid
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+
 class Category(models.Model):
     name = models.CharField(primary_key=True, max_length=30, unique=True, help_text='Enter a name for this category.')
      
@@ -79,7 +80,10 @@ class Product(models.Model):
 
 
 class Image(models.Model):
-    description = models.CharField(max_length = 35, help_text = 'Enter a description for this image.')
+    description = models.CharField(
+        max_length = 35, 
+        help_text = 'Enter a description for this image.'
+    )
     
     image = models.ImageField(upload_to = './pictures/') 
     uploaded_by = models.ForeignKey(CustomUser, on_delete = models.CASCADE, null=True) #when user is deleted delete all of their pictures

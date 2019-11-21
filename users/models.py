@@ -15,4 +15,4 @@ class CustomUser(AbstractUser):
 	order_buyer = models.CharField(max_length=100, default='None')
 
 	def __str__(self):
-		return self.email
+		return self.username
